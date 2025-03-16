@@ -1,8 +1,16 @@
-const express = require("express");
-const mongoose = require("mongoose");
 require("dotenv").config();
 
+console.log("URI:  " ,process.env.MONGO_URI);
+
+const express = require("express");
+const mongoose = require("mongoose");
+
 const app = express();
+
+if (!process.env.MONGO_URI) {
+  console.error("❌ ERROR: MONGO_URI is undefined. Check your .env file.");
+  process.exit(1);  // Stop the server if MONGO_URI is missing
+}
 
 // Connect to MongoDB Atlas
 mongoose
