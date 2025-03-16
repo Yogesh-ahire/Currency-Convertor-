@@ -3,39 +3,42 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-const documentRoutes = require("./routes/documentRoutes");
-app.use("/api/documents", documentRoutes);
-
-
-// Load environment variables
+// Load environment variables **at the top**
 dotenv.config();
 
+// Initialize Express App **before using it**
 const app = express();
-app.use(express.json());  // Middleware to parse JSON
-app.use(cors());  // Enable Cross-Origin Requests
+
+// Middleware
+app.use(express.json());
+app.use(cors());
+
+// Import Routes **after defining app**
+const documentRoutes = require("./routes/documentRoutes");
+
+// Use Routes **after initializing app**
+app.use("/api/documents", documentRoutes);
 
 // Database Connection
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log("MongoDB Connected");
+        await mongoose.connect(process.env.MONGO_URI);
+        console.log("✅ MongoDB Connected Successfully");
     } catch (error) {
-        console.error("Error Connecting to MongoDB:", error);
-        process.exit(1);
+        console.error("❌ Error Connecting to MongoDB:", error);
+        process.exit(1); // Exit process if DB connection fails
     }
 };
-connectDB();
+
+// Connect to Database **before starting the server**
+connectDB().then(() => {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+        console.log(`🚀 Server running on port ${PORT}`);
+    });
+});
 
 // Basic Route
 app.get("/", (req, res) => {
     res.send("API is running...");
-});
-
-// Start the Server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
 });
