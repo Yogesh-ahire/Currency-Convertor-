@@ -1,0 +1,19 @@
+.container {
+    text-align: center;
+    padding: 20px;
+}
+
+.editorButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.editorButton:hover {
+    background-color: #0056b3;
+}

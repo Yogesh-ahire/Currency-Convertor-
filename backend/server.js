@@ -19,6 +19,8 @@ const documentRoutes = require("./routes/documentRoutes");
 // Use Routes **after initializing app**
 app.use("/api/documents", documentRoutes);
 
+app.use("/api/auth", require("./routes/authRoutes"));
+
 // Database Connection
 const connectDB = async () => {
     try {
