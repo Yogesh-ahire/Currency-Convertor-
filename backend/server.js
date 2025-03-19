@@ -1,6 +1,6 @@
 const express = require("express");
 const http = require("http");
-const connectDB = require("./config/db"); // ✅ Use imported DB connection
+const connectDB = require("./config/db"); //Use imported DB connection
 const authRoutes = require("./routes/authRoutes");
 const documentRoutes = require("./routes/documentRoutes");
 const WebSocket = require("ws");
@@ -25,7 +25,7 @@ const wss = new WebSocket.Server({ server });
 let document = ""; // Store document content
 
 wss.on("connection", (ws) => {
-    console.log("✅ New client connected");
+    console.log("New client connected");
 
     // Send current document state to new clients
     ws.send(JSON.stringify({ type: "init", data: document }));
@@ -38,18 +38,18 @@ wss.on("connection", (ws) => {
                 
                 // Broadcast update to all clients
                 wss.clients.forEach((client) => {
-                    if (client.readyState === WebSocket.OPEN) { // ✅ Fixed condition
+                    if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify({ type: "update", data: document }));
                     }
                 });
             }
         } catch (error) {
-            console.error("❌ Error parsing message:", error);
+            console.error("Error parsing message:", error);
         }
     });
 
     ws.on("close", () => {
-        console.log("❌ Client disconnected");
+        console.log("Client disconnected");
     });
 });
 
@@ -57,7 +57,7 @@ app.get("/", (req, res) => {
     res.send("API is running...");
 });
 
-// ✅ Ensure MongoDB is connected BEFORE starting server
+
 connectDB()
     .then(() => {
         const PORT = process.env.PORT || 5000;

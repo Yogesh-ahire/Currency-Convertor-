@@ -5,7 +5,7 @@ const { check, validationResult } = require("express-validator");
 const User = require("../models/User");
 
 const router = express.Router();
-const JWT_SECRET = "your_secret_key"; // Change this to a strong secret key
+const JWT_SECRET = "hello_there_secret"; 
 
 // Register Route
 router.post(
