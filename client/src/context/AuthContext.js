@@ -6,7 +6,12 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     const login = (userData) => {
-        setUser(userData);
+        setUser({
+            id: userData.id,  // Ensure ID is stored
+            name: userData.name,
+            email: userData.email,
+            role: userData.role,  // Add user role
+        });
     };
 
     const logout = () => {
