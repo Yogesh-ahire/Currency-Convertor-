@@ -15,7 +15,7 @@ const App = () => {
     const connectSocket = () => {
       const newSocket = new WebSocket("ws://localhost:5000"); 
 
-      newSocket.onopen = () => console.log(" WebSocket connected");
+      newSocket.onopen = () => console.log("WebSocket connected");
 
       newSocket.onmessage = (event) => {
         try {
@@ -23,16 +23,16 @@ const App = () => {
           if (message.type === "init") setDocument(message.data);
           else if (message.type === "update") setDocument(message.data);
         } catch (error) {
-          console.error(" WebSocket message error:", error);
+          console.error("WebSocket message error:", error);
         }
       };
 
       newSocket.onclose = () => {
-        console.log(" WebSocket closed. Reconnecting in 3s...");
+        console.log("WebSocket closed. Reconnecting in 3s...");
         setTimeout(connectSocket, 3000); // Auto-reconnect
       };
 
-      newSocket.onerror = (err) => console.error(" WebSocket error:", err);
+      newSocket.onerror = (err) => console.error("WebSocket error:", err);
 
       setSocket(newSocket);
     };
@@ -40,8 +40,8 @@ const App = () => {
     connectSocket();
   }, []);
 
-  const handleChange = (e) => {
-    const newDocument = e.target.value;
+  // ✅ Fix: handleChange now correctly receives the value from ReactQuill
+  const handleChange = (newDocument) => {
     setDocument(newDocument);
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify({ type: "update", data: newDocument }));
@@ -64,3 +64,4 @@ const App = () => {
 };
 
 export default App;
+

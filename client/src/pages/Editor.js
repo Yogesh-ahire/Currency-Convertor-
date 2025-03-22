@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import Quill's styles
 import AuthContext from "../context/AuthContext";
 import styles from "./Editor.module.css";
 
-const Editor = ({ document, handleChange, ownerId }) => {
+const Editor = ({ document = "", handleChange, ownerId }) => {
     const { user } = useContext(AuthContext);
 
     // Check if the user is authenticated
@@ -14,19 +16,17 @@ const Editor = ({ document, handleChange, ownerId }) => {
 
     return (
         <div className={styles.container}>
-            <h2>Collaborative Editor</h2>
-
+            
             {!isAuthenticated ? (
                 <p className={styles.error}>You must be logged in to edit this document.</p>
             ) : !isOwner && !isEditor ? (
                 <p className={styles.error}>You do not have permission to edit this document.</p>
             ) : (
-                <textarea
+                <ReactQuill
                     className={styles.editorBox}
                     value={document}
                     onChange={handleChange}
-                    rows="20"
-                    cols="80"
+                    theme="snow" // "bubble" is another option
                 />
             )}
         </div>
